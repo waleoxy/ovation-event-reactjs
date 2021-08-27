@@ -74,9 +74,17 @@ class OvationEventProvider  extends Component {
     sortData = () => {
         const {storedWorks, category, category_type, search} = this.state;
         let tempWorks = [...storedWorks];
-        if(category !== "all" && category_type == "all"){
-            tempWorks = tempWorks.filter(item => item.category == category);
-        }else{
+        
+        if(search.length > 0){
+            tempWorks = tempWorks.filter(item => {
+                let tempSearch = search.toLowerCase();
+                let tempTitle = item.title.toLowerCase().slice(0, search.length);
+                if(tempSearch === tempTitle){
+                    return item;
+                }
+            })
+        }
+        if(category !== "all" && category_type !== "all"){
             tempWorks = tempWorks.filter(item => item.category == category);
             tempWorks = tempWorks.filter(item_type => item_type.category_type == category_type);
         }
